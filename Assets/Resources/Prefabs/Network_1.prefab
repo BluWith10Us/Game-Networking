@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -1481221790422676458}
   - component: {fileID: 5404839273057044154}
   - component: {fileID: 7317480056995135389}
+  - component: {fileID: -117582873404095137}
   m_Layer: 0
   m_Name: Network_1
   m_TagString: Untagged
@@ -245,4 +246,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4fdd8a0cb43594f95bb20a420a4fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnManager
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &-117582873404095137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916149114587393213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975c2189109531b4290c7515ebe4b408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCameraAssign
   ShowTopMostFoldoutHeaderGroup: 1
