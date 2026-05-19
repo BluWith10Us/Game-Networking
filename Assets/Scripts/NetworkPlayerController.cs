@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class NetworkPllayerController : NetworkBehaviour
+public class NetworkPlayerController : NetworkBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float gravity = -9.8f;
