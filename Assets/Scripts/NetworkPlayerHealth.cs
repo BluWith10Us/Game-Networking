@@ -46,7 +46,7 @@ public class NetworkPlayerHealth : NetworkBehaviour
     public void Respawn()
     {
         CurrentHealth.Value = maxHealth;
-        GameObject[] spawnPointObjects = GameObject.FindGameObjectsWithTag("Spawnpoint");
+        GameObject[] spawnPointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
         int rand = Random.Range(0, spawnPointObjects.Length);
         Transform selectedSpawn = spawnPointObjects[rand].transform;
 

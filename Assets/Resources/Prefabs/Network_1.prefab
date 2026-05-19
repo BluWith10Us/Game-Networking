@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: -117582873404095137}
   - component: {fileID: 6858209918499716598}
   - component: {fileID: 6325056536588060788}
+  - component: {fileID: 1908402716714875683}
   m_Layer: 3
   m_Name: Network_1
   m_TagString: Untagged
@@ -300,3 +301,22 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 100
+--- !u!114 &1908402716714875683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916149114587393213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ffe1170450311646a0889bfc798831c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkPlayerAttack
+  ShowTopMostFoldoutHeaderGroup: 1
+  attackRange: 3
+  damageAmount: 25
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  playerAttackKey: 323
