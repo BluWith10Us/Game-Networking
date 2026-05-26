@@ -1,10 +1,10 @@
 using UnityEngine;
 using Unity.Netcode;
-using System.Xml.Schema;
 
 public class NetworkPlayerHealth : NetworkBehaviour
 {
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private GameObject damageTextPrefab;
 
     public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>(
         100,
@@ -37,7 +37,9 @@ public class NetworkPlayerHealth : NetworkBehaviour
         CurrentHealth.Value -= damageTaken;
         CurrentHealth.Value = Mathf.Clamp(CurrentHealth.Value, 0, maxHealth);
 
-        if (CurrentHealth.Value > 0)
+        ShowDamageClientRpc(damageTaken);
+
+        if (CurrentHealth.Value <= 0)
         {
             Respawn();
         }
@@ -65,6 +67,21 @@ public class NetworkPlayerHealth : NetworkBehaviour
         if (characterController != null)
         {
             characterController.enabled = true;
+        }
+    }
+
+    [ClientRpc]
+    private void ShowDamageClientRpc(int damage)
+    {
+        Vector3 spawnPos = transform.position + Vector3.up * 2f;
+
+        GameObject damageObj = Instantiate(damageTextPrefab, spawnPos, Quaternion.identity);
+
+        PlayerDamagePopup damageText = damageObj.GetComponent<PlayerDamagePopup>();
+
+        if (damageText != null)
+        {
+            damageText.SetDamage(damage);
         }
     }
 }

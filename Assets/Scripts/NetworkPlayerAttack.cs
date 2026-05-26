@@ -36,7 +36,8 @@ public class NetworkPlayerAttack : NetworkBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.rebeccaPurple;
-        Gizmos.DrawWireSphere(transform.position + transform.forward, attackRange);
+        Gizmos.color = Color.magenta;
+        Vector3 attackCenter = transform.position + transform.forward;
+        Gizmos.DrawWireSphere(attackCenter, attackRange);
     }
 }
