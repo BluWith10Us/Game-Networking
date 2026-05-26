@@ -5,6 +5,9 @@ public class NetworkPlayerHealth : NetworkBehaviour
 {
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private GameObject damageTextPrefab;
+    [SerializeField] private GameObject uiRoot;
+    [SerializeField] private TMPro.TextMeshProUGUI healthText;
+    [SerializeField] private UnityEngine.UI.Image healthBar;
 
     public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>(
         100,
@@ -14,11 +17,23 @@ public class NetworkPlayerHealth : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if(IsServer)
+        if (IsOwner)
+        {
+            uiRoot.SetActive(true);
+        }
+        else
+        {
+            uiRoot.SetActive(false);
+        }
+
+        if (IsServer)
         {
             CurrentHealth.Value = maxHealth;
         }
+
         CurrentHealth.OnValueChanged += OnChangeHealth;
+
+        UpdateUI(CurrentHealth.Value);
     }
 
     public override void OnNetworkDespawn()
@@ -26,9 +41,17 @@ public class NetworkPlayerHealth : NetworkBehaviour
         CurrentHealth.OnValueChanged -= OnChangeHealth;
     }
 
-    public void OnChangeHealth(int previousAmount, int newAmount)
+    private void OnChangeHealth(int previous, int current)
     {
-        Debug.Log($"{gameObject.name} change health: {previousAmount} -> {newAmount}");
+        UpdateUI(current);
+    }
+
+    private void UpdateUI(int hp)
+    {
+        if (!IsOwner) return;
+
+        healthText.text = $"{hp} / {maxHealth}";
+        healthBar.fillAmount = (float)hp / maxHealth;
     }
 
     public void TakeDamage(int damageTaken)
