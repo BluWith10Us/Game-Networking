@@ -23,7 +23,6 @@ public class NetworkPlayerShooter : NetworkBehaviour
     [ServerRpc]
     private void RequestShootServerRpc(Vector3 spawnPosition, Vector3 spawnDirection)
     {
-        Debug.Log("Shoot");
         //Creates the object in the server
         GameObject projectileInstance = Instantiate(
             bulletPrefab, 
