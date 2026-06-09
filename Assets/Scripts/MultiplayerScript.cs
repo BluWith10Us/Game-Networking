@@ -17,7 +17,7 @@ public class MultiplayerMenu : NetworkBehaviour
     [SerializeField] private TMP_Text statusText;
 
     [Header("Relay Settings")]
-    [SerializeField] private int maxConnections = 4;
+    [SerializeField] private int maxConnections = 2;
 
     private const string WebGLConnectionType = "wss";
 
