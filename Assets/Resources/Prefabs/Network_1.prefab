@@ -212,6 +212,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6400211914050383658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1395535506206464571}
+  m_Layer: 3
+  m_Name: Bullet SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1395535506206464571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6400211914050383658}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3943622958105425673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6561406984156322934
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,9 +367,10 @@ GameObject:
   - component: {fileID: 6858209918499716598}
   - component: {fileID: 6325056536588060788}
   - component: {fileID: 1908402716714875683}
+  - component: {fileID: 6455759516332925465}
   m_Layer: 3
   m_Name: Network_1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -357,6 +389,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3080420767502214232}
+  - {fileID: 1395535506206464571}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1938768018139398168
@@ -642,3 +675,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   playerAttackKey: 323
+--- !u!114 &6455759516332925465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916149114587393213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf650e2d75a1eb47989318b7aa7749e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkPlayerShooter
+  ShowTopMostFoldoutHeaderGroup: 1
+  bulletPrefab: {fileID: 8390700635150085252, guid: 3d4ee4b7cc0230044a7646d5fcaacba6, type: 3}
+  bulletSpawnPoint: {fileID: 1395535506206464571}
+  fireCooldown: 0.1
+  fireKey: 102
