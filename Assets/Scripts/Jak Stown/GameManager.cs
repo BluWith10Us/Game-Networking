@@ -53,8 +53,8 @@ public class GameManager : NetworkBehaviour
 
     private void UpdateUI()
     {
-        player1Text.text = "Player 1 Coins: " + player1Coins.Value;
-        player2Text.text = "Player 2 Coins: " + player2Coins.Value;
+        player1Text.text = $"P1 Coins: {player1Coins.Value}";
+        player2Text.text = $"P2 Coins: {player2Coins.Value}";
     }
 
     public void AddCoin(ulong clientId)
