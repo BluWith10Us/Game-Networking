@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7985702018777709036}
   - component: {fileID: 8830207625322593924}
   - component: {fileID: 8730897072709760113}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Coin Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 4233670122374575414}
   - component: {fileID: -1316583458006528731}
   - component: {fileID: 4951905979081072118}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1719951228
+  GlobalObjectIdHash: 2316418756
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -472,8 +472,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e3ebd8d870a6ef4fb6ca7b661e5968d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
+  ShowTopMostFoldoutHeaderGroup: 1
   interactRange: 2.7
   interactLayer:
     serializedVersion: 2
     m_Bits: 64
   interactKey: 101
+  maxChargeRate: 5
+  maxStrength: 10

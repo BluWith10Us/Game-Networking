@@ -5,9 +5,8 @@ public class BallLandingNotifier : NetworkBehaviour
 {
     private LauncherInteractable launcher;
     private float strength;
-
     private ulong ownerClientId;
-    private bool hasResolved = false;
+    private bool resolved;
 
     public void Init(LauncherInteractable l, float s, ulong ownerId)
     {
@@ -16,43 +15,37 @@ public class BallLandingNotifier : NetworkBehaviour
         ownerClientId = ownerId;
 
         Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(transform.up * strength * 3, ForceMode.Impulse);
+        rb.AddForce(transform.up * strength * 3f, ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!IsServer || hasResolved) return;
+        if (!IsServer || resolved) return;
 
-        // SUCCESS: player catches ball
         if (collision.gameObject.CompareTag("Player"))
         {
-            Respawner respawner = collision.gameObject.GetComponent<Respawner>();
+            var respawner = collision.gameObject.GetComponent<Respawner>();
+            respawner?.SuccessRespawn();
 
-            if (respawner != null)
-            {
-                respawner.SuccessRespawn();
-            }
-
-            if (launcher != null)
-            {
-                launcher.OnBallLanded();
-            }
-
+            launcher?.OnBallResolved();
             Resolve();
             return;
         }
 
-        // FAIL: hit ground failed
         if (collision.gameObject.CompareTag("Ground"))
         {
-            if (launcher != null)
+            launcher?.OnBallResolved();
+
+            GameObject playerObj = null;
+
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(ownerClientId, out var client))
             {
-                launcher.OnBallLanded();
+                playerObj = client.PlayerObject != null ? client.PlayerObject.gameObject : null;
             }
 
-            if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(ownerClientId, out var netObj))
+            if (playerObj != null)
             {
-                var respawner = netObj.GetComponent<Respawner>();
+                var respawner = playerObj.GetComponent<Respawner>();
                 respawner?.FailedRespawn();
             }
 
@@ -60,11 +53,9 @@ public class BallLandingNotifier : NetworkBehaviour
         }
     }
 
-    private void Resolve()
+    void Resolve()
     {
-        hasResolved = true;
-
-        NetworkObject netObj = GetComponent<NetworkObject>();
-        netObj.Despawn(true);
+        resolved = true;
+        GetComponent<NetworkObject>().Despawn(true);
     }
 }

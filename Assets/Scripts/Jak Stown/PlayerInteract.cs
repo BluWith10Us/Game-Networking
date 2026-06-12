@@ -1,63 +1,84 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerInteract : MonoBehaviour
+public class PlayerInteract : NetworkBehaviour
 {
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
-    private IInteractable currentInteractable;
+    private LauncherInteractable currentLauncher;
+
+    private bool isCharging;
+    private float charge;
+
+    [SerializeField] private float maxChargeRate = 5f;
+    [SerializeField] private float maxStrength = 10f;
 
     private void Update()
     {
+        if (!IsOwner) return;
+
         DetectInteractable();
 
         if (Input.GetKeyDown(interactKey))
         {
-            TryInteract();
+            if (currentLauncher != null)
+            {
+                isCharging = true;
+                charge = 0f;
+            }
+        }
+
+        if (isCharging && Input.GetKey(interactKey))
+        {
+            charge += Time.deltaTime * maxChargeRate;
+            charge = Mathf.Clamp(charge, 0f, maxStrength);
+        }
+
+        if (isCharging && Input.GetKeyUp(interactKey))
+        {
+            isCharging = false;
+
+            if (currentLauncher != null)
+            {
+                InteractServerRpc(currentLauncher.NetworkObjectId, charge);
+            }
         }
     }
 
     void DetectInteractable()
     {
-        currentInteractable = null;
+        currentLauncher = null;
 
-        Collider[] hits = Physics.OverlapSphere(
-            transform.position,
-            interactRange,
-            interactLayer
-        );
+        Collider[] hits = Physics.OverlapSphere(transform.position, interactRange, interactLayer);
 
         float closestDist = float.MaxValue;
 
         foreach (Collider hit in hits)
         {
-            IInteractable interactable = hit.GetComponent<IInteractable>();
+            var launcher = hit.GetComponent<LauncherInteractable>();
+            if (launcher == null) continue;
 
-            if (interactable != null)
+            float dist = Vector3.Distance(transform.position, hit.transform.position);
+
+            if (dist < closestDist)
             {
-                float dist = Vector3.Distance(transform.position, hit.transform.position);
-
-                if (dist < closestDist)
-                {
-                    closestDist = dist;
-                    currentInteractable = interactable;
-                }
+                closestDist = dist;
+                currentLauncher = launcher;
             }
         }
     }
 
-    void TryInteract()
+    [ServerRpc]
+    void InteractServerRpc(ulong launcherId, float strength)
     {
-        if (currentInteractable == null)
+        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(launcherId, out var netObj))
             return;
 
-        currentInteractable.Interact(gameObject);
-    }
+        if (!netObj.TryGetComponent(out LauncherInteractable launcher))
+            return;
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactRange);
+        launcher.LaunchBall(NetworkObjectId, strength);
     }
 }

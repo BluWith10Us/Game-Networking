@@ -9,37 +9,47 @@ public class Respawner : NetworkBehaviour
     {
         coins = GetComponent<PlayerCoinHolder>();
     }
-
     public void SuccessRespawn()
     {
-        if (!IsOwner)
-            return;
+        if (!IsServer) return;
 
-        SuccessRespawnRpc();
-    }
+        ulong clientId = OwnerClientId;
 
-    [Rpc(SendTo.Server)]
-    private void SuccessRespawnRpc()
-    {
-        coins.CashInCoins();
-        LobbyManager.Instance.RespawnPlayer(OwnerClientId);
-        CoinManager.Instance.ResetCoins();
+        if (coins != null)
+        {
+            coins.CashInCoins();
+        }
+
+        if (LobbyManager.Instance != null)
+        {
+            LobbyManager.Instance.RespawnPlayer(clientId);
+        }
+
+        if (CoinManager.Instance != null)
+        {
+            CoinManager.Instance.ResetCoins();
+        }
     }
 
     public void FailedRespawn()
     {
-        if (!IsOwner)
-            return;
-        Debug.Log("hello I am respawning");
-        FailedRespawnRpc();
-    }
+        if (!IsServer) return;
 
-    [Rpc(SendTo.Server)]
-    private void FailedRespawnRpc()
-    {
-        Debug.Log("hello I am losing coins");
-        coins.LoseCoins();
-        LobbyManager.Instance.RespawnPlayer(OwnerClientId);
-        CoinManager.Instance.ResetCoins();
+        ulong clientId = OwnerClientId;
+
+        if (coins != null)
+        {
+            coins.LoseCoins();
+        }
+
+        if (LobbyManager.Instance != null)
+        {
+            LobbyManager.Instance.RespawnPlayer(clientId);
+        }
+
+        if (CoinManager.Instance != null)
+        {
+            CoinManager.Instance.ResetCoins();
+        }
     }
 }
