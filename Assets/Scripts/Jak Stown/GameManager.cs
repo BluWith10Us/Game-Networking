@@ -57,18 +57,34 @@ public class GameManager : NetworkBehaviour
         player2Text.text = $"P2 Coins: {player2Coins.Value}";
     }
 
-    public void AddCoin(ulong clientId)
+    public void AddCoins(ulong clientId, int amount)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
 
-        // Host is usually Client ID 0
         if (clientId == 0)
         {
-            player1Coins.Value++;
+            player1Coins.Value += amount;
         }
         else
         {
-            player2Coins.Value++;
+            player2Coins.Value += amount;
+        }
+    }
+
+    public string GetResult()
+    {
+        if (player1Coins.Value > player2Coins.Value)
+        {
+            return "Player 1 Wins!";
+        }
+        else if (player2Coins.Value > player1Coins.Value)
+        {
+            return "Player 2 Wins!";
+        }
+        else
+        {
+            return "It's a Draw!";
         }
     }
 }

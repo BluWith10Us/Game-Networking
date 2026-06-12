@@ -9,8 +9,10 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject readyButton;
     [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private GameTimer gameTimer;
 
     private readonly Dictionary<ulong, bool> readyStates = new();
+    private Dictionary<ulong, Transform> playerSpawnPoints = new();
     private bool gameStarted;
 
     private void Awake()
@@ -74,6 +76,7 @@ public class LobbyManager : NetworkBehaviour
 
         gameStarted = true;
         SpawnPlayers();
+        gameTimer.StartTimer();
     }
 
     private void SpawnPlayers()
@@ -85,12 +88,50 @@ public class LobbyManager : NetworkBehaviour
         foreach (var kvp in readyStates)
         {
             ulong clientId = kvp.Key;
+
             Transform spawn = spawnPoints[Mathf.Min(index, spawnPoints.Length - 1)];
+
             GameObject player = Instantiate(playerPrefab, spawn.position, spawn.rotation);
+
             NetworkObject netObj = player.GetComponent<NetworkObject>();
+
             netObj.SpawnAsPlayerObject(clientId, destroyWithScene: true);
+
+            playerSpawnPoints[clientId] = spawn;
+
             index++;
         }
+    }
+
+    public void RespawnPlayer(ulong clientId)
+    {
+        if (!IsServer)
+            return;
+
+        if (!playerSpawnPoints.ContainsKey(clientId))
+            return;
+
+        NetworkObject playerObject =
+            NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+
+        if (playerObject == null)
+            return;
+
+        Transform spawn = playerSpawnPoints[clientId];
+
+        CharacterController controller =
+            playerObject.GetComponent<CharacterController>();
+
+        if (controller != null)
+            controller.enabled = false;
+
+        playerObject.transform.SetPositionAndRotation(
+            spawn.position,
+            spawn.rotation
+        );
+
+        if (controller != null)
+            controller.enabled = true;
     }
 
     [Rpc(SendTo.ClientsAndHost)]
