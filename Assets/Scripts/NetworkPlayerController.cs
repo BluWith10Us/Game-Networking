@@ -11,37 +11,25 @@ public class NetworkPlayerController : NetworkBehaviour
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     public CharacterController controller;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Only the player who owns this character should control and move it
         if (!IsOwner) return;
 
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-
         Vector2 inputDirection = new Vector2(horizontalInput, verticalInput);
 
         bool jumpPressed = Input.GetKeyDown(jumpKey);
 
-        if (IsServer)
-        {
-            MovePlayer(inputDirection, jumpPressed);
-        }
-        else
-        {
-            MovePlayerRPC(inputDirection, jumpPressed);
-        }
-    }
-
-    [Rpc(SendTo.Server)] //Marks the next method as an RPC that runs on the server
-    private void MovePlayerRPC(Vector2 movementInput, bool jumpPressed)
-    {
-        MovePlayer(movementInput, jumpPressed);
+        // Move locally immediately — zero input delay!
+        MovePlayer(inputDirection, jumpPressed);
     }
 
     private void MovePlayer(Vector2 movementInput, bool jumpPressed)

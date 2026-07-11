@@ -18,6 +18,8 @@ public class MultiplayerMenu : NetworkBehaviour
 
     [Header("Relay Settings")]
     [SerializeField] private int maxConnections = 2;
+    [SerializeField] private bool useRelay = true; // Toggle this OFF in inspector to test locally!
+    [SerializeField] private string targetRegion = "asia-southeast1"; // Singapore region for low ping in PH
 
     private const string WebGLConnectionType = "wss";
 
@@ -53,11 +55,20 @@ public class MultiplayerMenu : NetworkBehaviour
     {
         try
         {
+            if (!useRelay)
+            {
+                SetStatus("Starting Local Host (127.0.0.1)...");
+                bool startedLocal = NetworkManager.Singleton.StartHost();
+                if (startedLocal) HideMenu();
+                return;
+            }
+
             SetStatus("Creating host session...");
 
             await InitializeUnityServices();
 
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+            // Modified to connect to a specific region (Singapore) instead of defaulting to US
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections, targetRegion);
 
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
@@ -97,6 +108,14 @@ public class MultiplayerMenu : NetworkBehaviour
     {
         try
         {
+            if (!useRelay)
+            {
+                SetStatus("Joining Local Host (127.0.0.1)...");
+                bool startedLocal = NetworkManager.Singleton.StartClient();
+                if (startedLocal) HideMenu();
+                return;
+            }
+
             SetStatus("Joining session...");
 
             await InitializeUnityServices();

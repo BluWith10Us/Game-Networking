@@ -823,6 +823,8 @@ MonoBehaviour:
   joinCodeText: {fileID: 1206009505}
   statusText: {fileID: 1509577478}
   maxConnections: 2
+  useRelay: 0
+  targetRegion: asia-southeast1
 --- !u!4 &320278980
 Transform:
   m_ObjectHideFlags: 0
@@ -4012,7 +4014,7 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: e3f8fb45e4babc54f9e8e97b62dd06be, type: 2}
-    TickRate: 15
+    TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 
