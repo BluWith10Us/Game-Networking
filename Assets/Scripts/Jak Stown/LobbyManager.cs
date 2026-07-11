@@ -6,18 +6,24 @@ public class LobbyManager : NetworkBehaviour
 {
     public static LobbyManager Instance;
 
+    [Header("Lobby Settings")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject readyButton;
-    [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private GameTimer gameTimer;
+    [SerializeField] private int minimumPlayersToStart = 2;
+
+    [Header("Spawn Settings")]
+    [SerializeField] private Transform[] spawnPoints;
 
     private readonly Dictionary<ulong, bool> readyStates = new();
-    private Dictionary<ulong, Transform> playerSpawnPoints = new();
+    private readonly Dictionary<ulong, int> playerSpawnIndices = new();
+
     private bool gameStarted;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     public override void OnNetworkSpawn()
@@ -26,6 +32,14 @@ public class LobbyManager : NetworkBehaviour
         {
             NetworkManager.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
+
+            foreach (ulong clientId in NetworkManager.ConnectedClientsIds)
+            {
+                if (!readyStates.ContainsKey(clientId))
+                {
+                    readyStates[clientId] = false;
+                }
+            }
         }
     }
 
@@ -45,15 +59,14 @@ public class LobbyManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        if (readyStates.ContainsKey(clientId))
-            readyStates.Remove(clientId);
+        readyStates.Remove(clientId);
+        playerSpawnIndices.Remove(clientId);
     }
 
     [Rpc(SendTo.Server)]
     public void ReadyRpc(RpcParams rpcParams = default)
     {
         ulong clientId = rpcParams.Receive.SenderClientId;
-
         readyStates[clientId] = true;
 
         CheckStartGame();
@@ -61,17 +74,12 @@ public class LobbyManager : NetworkBehaviour
 
     private void CheckStartGame()
     {
-        Debug.Log("Ready Counts: " + readyStates.Count);
-        if (gameStarted)
-            return;
+        if (gameStarted) return;
+        if (readyStates.Count < minimumPlayersToStart) return;
 
-        if (readyStates.Count < 2)
-            return;
-
-        foreach (var kvp in readyStates)
+        foreach (var isReady in readyStates.Values)
         {
-            if (!kvp.Value)
-                return;
+            if (!isReady) return;
         }
 
         gameStarted = true;
@@ -82,22 +90,28 @@ public class LobbyManager : NetworkBehaviour
     private void SpawnPlayers()
     {
         if (!IsServer) return;
+
         HideReadyButtonRpc();
         int index = 0;
 
-        foreach (var kvp in readyStates)
+        foreach (var clientId in readyStates.Keys)
         {
-            ulong clientId = kvp.Key;
+            int spawnIndex = index % spawnPoints.Length;
+            Transform spawn = spawnPoints[spawnIndex];
 
-            Transform spawn = spawnPoints[Mathf.Min(index, spawnPoints.Length - 1)];
+            playerSpawnIndices[clientId] = spawnIndex;
 
             GameObject player = Instantiate(playerPrefab, spawn.position, spawn.rotation);
-
             NetworkObject netObj = player.GetComponent<NetworkObject>();
 
             netObj.SpawnAsPlayerObject(clientId, destroyWithScene: true);
 
-            playerSpawnPoints[clientId] = spawn;
+            ClientRpcParams clientRpcParams = new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams { TargetClientIds = new[] { clientId } }
+            };
+
+            ForcePlayerPositionClientRpc(spawn.position, spawn.rotation, clientRpcParams);
 
             index++;
         }
@@ -105,33 +119,35 @@ public class LobbyManager : NetworkBehaviour
 
     public void RespawnPlayer(ulong clientId)
     {
-        if (!IsServer)
-            return;
+        if (!IsServer) return;
 
-        if (!playerSpawnPoints.ContainsKey(clientId))
-            return;
+        if (!playerSpawnIndices.TryGetValue(clientId, out int spawnIndex)) return;
 
-        NetworkObject playerObject =
-            NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+        Transform spawn = spawnPoints[spawnIndex];
 
-        if (playerObject == null)
-            return;
+        ClientRpcParams clientRpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams { TargetClientIds = new[] { clientId } }
+        };
 
-        Transform spawn = playerSpawnPoints[clientId];
+        ForcePlayerPositionClientRpc(spawn.position, spawn.rotation, clientRpcParams);
+    }
 
-        CharacterController controller =
-            playerObject.GetComponent<CharacterController>();
+    [ClientRpc]
+    private void ForcePlayerPositionClientRpc(Vector3 position, Quaternion rotation, ClientRpcParams rpcParams = default)
+    {
+        NetworkObject localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
 
-        if (controller != null)
-            controller.enabled = false;
+        if (localPlayer != null)
+        {
+            CharacterController controller = localPlayer.GetComponent<CharacterController>();
 
-        playerObject.transform.SetPositionAndRotation(
-            spawn.position,
-            spawn.rotation
-        );
+            if (controller != null) controller.enabled = false;
 
-        if (controller != null)
-            controller.enabled = true;
+            localPlayer.transform.SetPositionAndRotation(position, rotation);
+
+            if (controller != null) controller.enabled = true;
+        }
     }
 
     [Rpc(SendTo.ClientsAndHost)]
