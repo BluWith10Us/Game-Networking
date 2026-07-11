@@ -87,4 +87,18 @@ public class GameManager : NetworkBehaviour
             return "It's a Draw!";
         }
     }
+
+    //Gets players currently carried coins
+    public int GetBankedCoins(ulong clientId)
+    {
+        if (clientId == 0)
+            return player1Coins.Value;
+
+        return player2Coins.Value;
+    }
+
+    public int GetCarryLimit(ulong clientId)
+    {
+        return GetBankedCoins(clientId) + 1;
+    }
 }

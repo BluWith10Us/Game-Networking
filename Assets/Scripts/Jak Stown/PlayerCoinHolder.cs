@@ -18,7 +18,7 @@ public class PlayerCoinHolder : NetworkBehaviour
         UpdateCoinText();
 
         if (IsOwner) return;
-        coinHeldText.gameObject.SetActive(false);
+        coinHeldText.gameObject.SetActive(false); //Hides display from other players
     }
 
     public override void OnNetworkDespawn()
@@ -33,10 +33,13 @@ public class PlayerCoinHolder : NetworkBehaviour
 
     private void UpdateCoinText()
     {
-        if (coinHeldText != null)
-        {
-            coinHeldText.text = $"Coins Held: {carriedCoins.Value}";
-        }
+        if (coinHeldText == null)
+            return;
+
+        int carryLimit = GameManager.Instance.GetCarryLimit(OwnerClientId);
+
+        coinHeldText.text =
+            $"Coins Held: {carriedCoins.Value}/{carryLimit}";
     }
 
     public void AddCollectedCoin()
@@ -71,5 +74,26 @@ public class PlayerCoinHolder : NetworkBehaviour
     public int GetCarriedCoins()
     {
         return carriedCoins.Value;
+    }
+
+    public bool TryCollectCoin()
+    {
+        if (!IsServer)
+            return false;
+
+        int carryLimit = GameManager.Instance.GetCarryLimit(OwnerClientId);
+        carriedCoins.Value++;
+
+        if (carriedCoins.Value > carryLimit)
+        {
+            LoseCoins();
+
+            Respawner player = GetComponent<Respawner>();
+            player.FailedRespawn();
+
+            return false;
+        }
+
+        return true;
     }
 }

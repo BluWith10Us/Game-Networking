@@ -21,10 +21,9 @@ public class CoinPickup : NetworkBehaviour
         if (player == null) return;
 
         PlayerCoinHolder holder = player.GetComponent<PlayerCoinHolder>();
-        holder.AddCollectedCoin();
+        holder.TryCollectCoin();
 
         collected = true;
-
         SetCoinStateClientRpc(false);
     }
 
