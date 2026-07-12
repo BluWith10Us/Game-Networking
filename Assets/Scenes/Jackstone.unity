@@ -4494,10 +4494,11 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerPrefab: {fileID: 6445000338844181995, guid: b78be02ec23bdb346969f3b145281041, type: 3}
   readyButton: {fileID: 482530116}
+  gameTimer: {fileID: 846507623}
+  minimumPlayersToStart: 2
   spawnPoints:
   - {fileID: 493549968}
   - {fileID: 475717666}
-  gameTimer: {fileID: 846507623}
 --- !u!114 &846507623
 MonoBehaviour:
   m_ObjectHideFlags: 0
