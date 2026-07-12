@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerInteract : NetworkBehaviour
 {
-    [SerializeField] private float interactRange = 3f;
-    [SerializeField] private LayerMask interactLayer;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private LauncherInteractable currentLauncher;
@@ -15,11 +13,14 @@ public class PlayerInteract : NetworkBehaviour
     [SerializeField] private float maxChargeRate = 5f;
     [SerializeField] private float maxStrength = 10f;
 
+    private void Awake()
+    {
+        currentLauncher = GetComponent<LauncherInteractable>();
+    }
+
     private void Update()
     {
         if (!IsOwner) return;
-
-        DetectInteractable();
 
         if (Input.GetKeyDown(interactKey))
         {
@@ -43,29 +44,6 @@ public class PlayerInteract : NetworkBehaviour
             if (currentLauncher != null)
             {
                 InteractServerRpc(currentLauncher.NetworkObjectId, charge);
-            }
-        }
-    }
-
-    void DetectInteractable()
-    {
-        currentLauncher = null;
-
-        Collider[] hits = Physics.OverlapSphere(transform.position, interactRange, interactLayer);
-
-        float closestDist = float.MaxValue;
-
-        foreach (Collider hit in hits)
-        {
-            var launcher = hit.GetComponent<LauncherInteractable>();
-            if (launcher == null) continue;
-
-            float dist = Vector3.Distance(transform.position, hit.transform.position);
-
-            if (dist < closestDist)
-            {
-                closestDist = dist;
-                currentLauncher = launcher;
             }
         }
     }
