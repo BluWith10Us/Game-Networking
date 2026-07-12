@@ -18,7 +18,7 @@ public class PlayerCoinHolder : NetworkBehaviour
         UpdateCoinText();
 
         if (IsOwner) return;
-        coinHeldText.gameObject.SetActive(false); //Hides display from other players
+        coinHeldText.gameObject.SetActive(false);
     }
 
     public override void OnNetworkDespawn()
@@ -33,41 +33,29 @@ public class PlayerCoinHolder : NetworkBehaviour
 
     private void UpdateCoinText()
     {
-        if (coinHeldText == null)
-            return;
+        if (coinHeldText == null) return;
 
         int carryLimit = GameManager.Instance.GetCarryLimit(OwnerClientId);
-
-        coinHeldText.text =
-            $"Coins Held: {carriedCoins.Value}/{carryLimit}";
+        coinHeldText.text = $"Coins Held: {carriedCoins.Value}/{carryLimit}";
     }
 
     public void AddCollectedCoin()
     {
-        if (!IsServer)
-            return;
-
+        if (!IsServer) return;
         carriedCoins.Value++;
     }
 
     public void CashInCoins()
     {
-        if (!IsServer)
-            return;
+        if (!IsServer) return;
 
-        GameManager.Instance.AddCoins(
-            OwnerClientId,
-            carriedCoins.Value
-        );
-
+        GameManager.Instance.AddCoins(OwnerClientId);
         carriedCoins.Value = 0;
     }
 
     public void LoseCoins()
     {
-        if (!IsServer)
-            return;
-
+        if (!IsServer) return;
         carriedCoins.Value = 0;
     }
 
@@ -78,8 +66,7 @@ public class PlayerCoinHolder : NetworkBehaviour
 
     public bool TryCollectCoin()
     {
-        if (!IsServer)
-            return false;
+        if (!IsServer) return false;
 
         int carryLimit = GameManager.Instance.GetCarryLimit(OwnerClientId);
         carriedCoins.Value++;
@@ -87,13 +74,11 @@ public class PlayerCoinHolder : NetworkBehaviour
         if (carriedCoins.Value > carryLimit)
         {
             LoseCoins();
-
             Respawner player = GetComponent<Respawner>();
             player.FailedRespawn();
 
             return false;
         }
-
         return true;
     }
 }

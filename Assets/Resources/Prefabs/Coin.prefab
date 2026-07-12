@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3432421531
+  GlobalObjectIdHash: 198521363
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -92,7 +92,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8808547, y: 2.7280357, z: 1}
+  m_Size: {x: 2.05, y: 2.7280357, z: 1}
   m_Center: {x: -0.010600612, y: -0.014669776, z: 0}
 --- !u!1001 &9006032321219665852
 PrefabInstance:

@@ -57,6 +57,6 @@ public class PlayerInteract : NetworkBehaviour
         if (!netObj.TryGetComponent(out LauncherInteractable launcher))
             return;
 
-        launcher.LaunchBall(NetworkObjectId, strength);
+        launcher.LaunchBall(OwnerClientId, strength);
     }
 }

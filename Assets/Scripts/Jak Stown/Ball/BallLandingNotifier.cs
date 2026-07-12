@@ -25,7 +25,23 @@ public class BallLandingNotifier : NetworkBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             var respawner = collision.gameObject.GetComponent<Respawner>();
-            respawner?.SuccessRespawn();
+            var coinHolder = collision.gameObject.GetComponent<PlayerCoinHolder>();
+
+            if (respawner != null && coinHolder != null)
+            {
+                int maxCoins = GameManager.Instance.GetCarryLimit(collision.gameObject.GetComponent<NetworkObject>().OwnerClientId);
+                int currentCoins = coinHolder.GetCarriedCoins();
+
+                if (currentCoins == maxCoins)
+                {
+                    respawner.SuccessRespawn();
+                }
+                else
+                {
+                    // Respawn them (failure) because they didn't have the right amount
+                    respawner.FailedRespawn();
+                }
+            }
 
             launcher?.OnBallResolved();
             Resolve();
@@ -36,19 +52,35 @@ public class BallLandingNotifier : NetworkBehaviour
         {
             launcher?.OnBallResolved();
 
-            GameObject playerObj = null;
-
+            // Player loses coins if the ball hits the ground
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(ownerClientId, out var client))
             {
-                playerObj = client.PlayerObject != null ? client.PlayerObject.gameObject : null;
+                var playerObj = client.PlayerObject;
+                if (playerObj != null)
+                {
+                    playerObj.GetComponent<Respawner>()?.FailedRespawn();
+                }
             }
+            Resolve();
+        }
+    }
 
-            if (playerObj != null)
+    //For deathzone
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Ground"))
+        {
+            launcher?.OnBallResolved();
+
+            // Player loses coins if the ball hits the ground
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(ownerClientId, out var client))
             {
-                var respawner = playerObj.GetComponent<Respawner>();
-                respawner?.FailedRespawn();
+                var playerObj = client.PlayerObject;
+                if (playerObj != null)
+                {
+                    playerObj.GetComponent<Respawner>()?.FailedRespawn();
+                }
             }
-
             Resolve();
         }
     }

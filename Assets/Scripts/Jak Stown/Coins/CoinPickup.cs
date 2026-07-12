@@ -20,11 +20,19 @@ public class CoinPickup : NetworkBehaviour
         NetworkPlayerController player = other.GetComponent<NetworkPlayerController>();
         if (player == null) return;
 
-        PlayerCoinHolder holder = player.GetComponent<PlayerCoinHolder>();
-        holder.TryCollectCoin();
+        LauncherInteractable playerLauncher = player.GetComponent<LauncherInteractable>();
 
-        collected = true;
-        SetCoinStateClientRpc(false);
+        if (playerLauncher != null && !playerLauncher.isBusy.Value)
+        {
+            return;
+        }
+
+        PlayerCoinHolder holder = player.GetComponent<PlayerCoinHolder>();
+        if (holder != null && holder.TryCollectCoin())
+        {
+            collected = true;
+            SetCoinStateClientRpc(false);
+        }
     }
 
     public void ResetCoin()
