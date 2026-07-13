@@ -3,7 +3,9 @@ using Unity.Netcode;
 
 public class NetworkPlayerController : NetworkBehaviour
 {
-    [SerializeField] float moveSpeed = 10f;
+    [SerializeField] float baseMoveSpeed = 10f; 
+    private float currentSpeedMultiplier = 1f;
+
     [SerializeField] float gravity = -9.8f;
     [SerializeField] float groundedGravity = -2.2f;
     [SerializeField] float verticalVelocity = 0f;
@@ -36,32 +38,26 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         if (controller.isGrounded)
         {
-            if (verticalVelocity < 0f)
-            {
-                verticalVelocity = groundedGravity;
-            }
-
-            if (jumpPressed)
-            {
-                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            }
+            if (verticalVelocity < 0f) verticalVelocity = groundedGravity;
+            if (jumpPressed) verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
         else
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
 
-        Vector3 moveDir = new Vector3(
-            movementInput.x,
-            0f,
-            movementInput.y
-        ).normalized;
+        Vector3 moveDir = new Vector3(movementInput.x, 0f, movementInput.y).normalized;
 
-        Vector3 horizontalMovement = moveDir * moveSpeed;
+        float effectiveSpeed = baseMoveSpeed * currentSpeedMultiplier;
+
+        Vector3 horizontalMovement = moveDir * effectiveSpeed;
         Vector3 verticalMovement = Vector3.up * verticalVelocity;
 
-        Vector3 finalMovement = horizontalMovement + verticalMovement;
+        controller.Move((horizontalMovement + verticalMovement) * Time.deltaTime);
+    }
 
-        controller.Move(finalMovement * Time.deltaTime);
+    public void ModifySpeed(float modifier)
+    {
+        currentSpeedMultiplier = modifier;
     }
 }
