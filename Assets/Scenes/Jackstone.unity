@@ -1062,6 +1062,55 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &376204901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 376204903}
+  - component: {fileID: 376204902}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &376204902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376204901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: ce616538eeba2b2489a05620b51545dc, type: 2}
+--- !u!4 &376204903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376204901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 45.446056, y: -123.043045, z: 183.30418}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &383310821
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,7 +2571,7 @@ Transform:
   m_GameObject: {fileID: 475717665}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.54, y: 0, z: 0}
+  m_LocalPosition: {x: 17.46, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2699,7 +2748,7 @@ Transform:
   m_GameObject: {fileID: 493549967}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.98, y: 1.29, z: 0}
+  m_LocalPosition: {x: -10, y: 1.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2986,8 +3035,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -5764,33 +5813,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 331476656}
     m_Modifications:
-    - target: {fileID: 5828317632865155195, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 3797354900
+    - target: {fileID: 229371904768901923, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
+      propertyPath: isScaling
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5828317632865155195, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 3432421531
+    - target: {fileID: 229371904768901923, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
+      propertyPath: endScale.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6080060862352863474, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
       propertyPath: m_Name
       value: Coin (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 6080060862352863474, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6769853852647077719, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 4019242353
-      objectReference: {fileID: 0}
-    - target: {fileID: 6769853852647077719, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6769853852647077719, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 3432421531
       objectReference: {fileID: 0}
     - target: {fileID: 9012296449287576692, guid: 7af5b03ad5819fe4bb737ff143a86850, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11769,3 +11806,4 @@ SceneRoots:
   - {fileID: 280207382}
   - {fileID: 49134391}
   - {fileID: 853540369}
+  - {fileID: 376204903}
