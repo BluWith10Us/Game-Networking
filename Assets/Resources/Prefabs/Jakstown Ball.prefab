@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6610804984160320340}
   - component: {fileID: 3820976150271173716}
   - component: {fileID: 2830056055130719414}
+  - component: {fileID: 6042833320772794855}
   m_Layer: 0
   m_Name: Jakstown Ball
   m_TagString: Untagged
@@ -147,6 +148,22 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &6042833320772794855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648539521694763730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4cb35e086d6be4283f4226c2dc899b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BallLandingIndicator
+  indicatorPrefab: {fileID: 2061593068597104852, guid: 36248f1dab49d7a44955b677565a925d, type: 3}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1001 &2458458150280275243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -169,15 +186,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8538633911008453384, guid: e02b31792a067c74a81e275fcda3930b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.0874596
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8538633911008453384, guid: e02b31792a067c74a81e275fcda3930b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9731973
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8538633911008453384, guid: e02b31792a067c74a81e275fcda3930b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00643
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8538633911008453384, guid: e02b31792a067c74a81e275fcda3930b, type: 3}
       propertyPath: m_LocalRotation.w
