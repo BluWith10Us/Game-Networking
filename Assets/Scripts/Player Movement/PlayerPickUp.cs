@@ -3,8 +3,15 @@ using UnityEngine;
 public class PlayerPickUp : MonoBehaviour
 {
     [Header("Detection Settings")]
-    [SerializeField] private float radius = 1f;
+    [SerializeField] private float baseRange = 1f;
     [SerializeField] private LayerMask pickupLayer;
+
+    private float currentRange;
+
+    private void Start()
+    {
+        currentRange = baseRange;
+    }
 
     void Update()
     {
@@ -15,7 +22,7 @@ public class PlayerPickUp : MonoBehaviour
     private void TryPickUp()
     {
         // Check for all colliders within the radius
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, pickupLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, currentRange, pickupLayer);
 
         foreach (var hitCollider in hitColliders)
         {
@@ -31,6 +38,11 @@ public class PlayerPickUp : MonoBehaviour
     {
         Gizmos.color = Color.green;
         // Draw the radius around the player
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, currentRange);
+    }
+
+    public void ModifyRange(float modifier)
+    {
+        currentRange += modifier;
     }
 }

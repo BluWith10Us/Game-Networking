@@ -2,10 +2,10 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class SpeedMask : WearableMask
+public class MagnetMask : WearableMask
 {
-    [SerializeField] private float speedMultiplier = 2f;
-    [SerializeField] private float boostDuration = 10f;
+    [SerializeField] private float grabMultiplier = 4f;
+    [SerializeField] private float magnetDuration = 7f;
 
     public override void PickUp(GameObject target)
     {
@@ -21,7 +21,7 @@ public class SpeedMask : WearableMask
                 }
             };
 
-            ApplyBoostClientRpc(netObj.NetworkObjectId, speedMultiplier, rpcParams);
+            ApplyMagnetClientRpc(netObj.NetworkObjectId, grabMultiplier, rpcParams);
             StartCoroutine(RespawnRoutine());
         }
 
@@ -29,7 +29,7 @@ public class SpeedMask : WearableMask
     }
 
     [ClientRpc]
-    private void ApplyBoostClientRpc(
+    private void ApplyMagnetClientRpc(
     ulong playerId,
     float multiplier,
     ClientRpcParams rpcParams = default)
@@ -38,17 +38,17 @@ public class SpeedMask : WearableMask
           playerId,
           out NetworkObject playerObj))
         {
-            if (playerObj.TryGetComponent<NetworkPlayerController>(out var movement))
+            if (playerObj.TryGetComponent<PlayerPickUp>(out var pickup))
             {
-                StartCoroutine(BoostRoutine(movement, multiplier));
+                StartCoroutine(BoostRoutine(pickup, multiplier));
             }
         }
     }
 
-    private IEnumerator BoostRoutine(NetworkPlayerController movement, float multiplier)
+    private IEnumerator BoostRoutine(PlayerPickUp pickup, float multiplier)
     {
-        movement.ModifySpeed(multiplier);
-        yield return new WaitForSeconds(boostDuration);
-        movement.ModifySpeed(1f / multiplier);
+        pickup.ModifyRange(multiplier);
+        yield return new WaitForSeconds(magnetDuration);
+        pickup.ModifyRange(-multiplier);
     }
 }
