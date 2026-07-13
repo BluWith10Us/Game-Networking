@@ -330,7 +330,8 @@ GameObject:
   - component: {fileID: 1642944339380691446}
   - component: {fileID: -5373626989410296429}
   - component: {fileID: 8201054745976755572}
-  - component: {fileID: 3809315624193004304}
+  - component: {fileID: 7765563020506031475}
+  - component: {fileID: 568667115304442534}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -448,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1719951228
+  GlobalObjectIdHash: 2316418756
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -667,7 +668,7 @@ MonoBehaviour:
   interactKey: 101
   maxChargeRate: 5
   maxStrength: 10
---- !u!114 &3809315624193004304
+--- !u!114 &7765563020506031475
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -676,9 +677,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6445000338844181995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fc4127d5d03b34e9ba7b2d71b391e7, type: 3}
+  m_Script: {fileID: 11500000, guid: ec268a661ad74b342b2c5e564374fa43, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LauncherInteractable
+  m_EditorClassIdentifier: Assembly-CSharp::BallLauncher
   ShowTopMostFoldoutHeaderGroup: 1
   ballPrefab: {fileID: 1648539521694763730, guid: ff5985eef222d994eb28589b85c340a8, type: 3}
   spawnPoint: {fileID: 4699312554265298468}
@@ -688,6 +689,23 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+--- !u!114 &568667115304442534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6445000338844181995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76720747ab4875e499abf5dcc3397cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerPickUp
+  pickupRange: 2
+  pickupLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  rayOrigin: {fileID: 6569551948907473002}
 --- !u!1 &7353068801685461607
 GameObject:
   m_ObjectHideFlags: 0

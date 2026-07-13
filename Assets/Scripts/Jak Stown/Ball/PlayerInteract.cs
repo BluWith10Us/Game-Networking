@@ -5,7 +5,7 @@ public class PlayerInteract : NetworkBehaviour
 {
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
-    private LauncherInteractable currentLauncher;
+    private BallLauncher currentLauncher;
 
     private bool isCharging;
     private float charge;
@@ -15,7 +15,7 @@ public class PlayerInteract : NetworkBehaviour
 
     private void Awake()
     {
-        currentLauncher = GetComponent<LauncherInteractable>();
+        currentLauncher = GetComponent<BallLauncher>();
     }
 
     private void Update()
@@ -54,7 +54,7 @@ public class PlayerInteract : NetworkBehaviour
         if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(launcherId, out var netObj))
             return;
 
-        if (!netObj.TryGetComponent(out LauncherInteractable launcher))
+        if (!netObj.TryGetComponent(out BallLauncher launcher))
             return;
 
         launcher.LaunchBall(OwnerClientId, strength);

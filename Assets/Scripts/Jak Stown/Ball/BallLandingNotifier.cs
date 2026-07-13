@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class BallLandingNotifier : NetworkBehaviour
 {
-    private LauncherInteractable launcher;
+    private BallLauncher launcher;
     private float strength;
     private ulong ownerClientId;
     private bool resolved;
 
-    public void Init(LauncherInteractable l, float s, ulong ownerId)
+    public void Init(BallLauncher l, float s, ulong ownerId)
     {
         launcher = l;
         strength = s;

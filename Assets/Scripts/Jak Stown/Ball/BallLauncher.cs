@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class LauncherInteractable : NetworkBehaviour
+public class BallLauncher : NetworkBehaviour
 {
     [SerializeField] private GameObject ballPrefab;
     [SerializeField] private Transform spawnPoint;

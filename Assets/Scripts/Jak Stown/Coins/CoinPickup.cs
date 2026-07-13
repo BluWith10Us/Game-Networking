@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class CoinPickup : NetworkBehaviour
+public class CoinPickup : NetworkBehaviour, IPickUpable
 {
     private bool collected = false;
 
@@ -13,25 +13,26 @@ public class CoinPickup : NetworkBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void PickUp(GameObject target)
     {
         if (!IsServer || collected) return;
 
-        NetworkPlayerController player = other.GetComponent<NetworkPlayerController>();
+        //Grabs components from player
+        NetworkPlayerController player = target.GetComponent<NetworkPlayerController>();
         if (player == null) return;
 
-        LauncherInteractable playerLauncher = player.GetComponent<LauncherInteractable>();
+        BallLauncher playerLauncher = player.GetComponent<BallLauncher>();
 
         if (playerLauncher != null && !playerLauncher.isBusy.Value)
         {
-            return;
+            return; //does not pick up if the player is throwing the ball into the air
         }
 
         PlayerCoinHolder holder = player.GetComponent<PlayerCoinHolder>();
-        if (holder != null && holder.TryCollectCoin())
+        if (holder != null && holder.TryCollectCoin()) //Collects coin if conditions are met
         {
             collected = true;
-            SetCoinStateClientRpc(false);
+            SetCoinStateClientRpc(false); //turns off coin object for later respawn
         }
     }
 
