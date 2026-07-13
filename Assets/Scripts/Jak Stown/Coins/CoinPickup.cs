@@ -17,8 +17,8 @@ public class CoinPickup : NetworkBehaviour, IPickUpable
     {
         if (!IsServer || collected) return;
 
-        //Grabs components from player
-        NetworkPlayerController player = target.GetComponent<NetworkPlayerController>();
+        //Grabs components from player
+        NetworkPlayerController player = target.GetComponent<NetworkPlayerController>();
         if (player == null) return;
 
         BallLauncher playerLauncher = player.GetComponent<BallLauncher>();
@@ -26,14 +26,14 @@ public class CoinPickup : NetworkBehaviour, IPickUpable
         if (playerLauncher != null && !playerLauncher.isBusy.Value)
         {
             return; //does not pick up if the player is throwing the ball into the air
-        }
+        }
 
         PlayerCoinHolder holder = player.GetComponent<PlayerCoinHolder>();
         if (holder != null && holder.TryCollectCoin()) //Collects coin if conditions are met
-        {
+        {
             collected = true;
             SetCoinStateClientRpc(false); //turns off coin object for later respawn
-        }
+        }
     }
 
     public void ResetCoin()

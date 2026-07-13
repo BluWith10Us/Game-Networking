@@ -1,14 +1,14 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using System.Collections;
 
-public class SpeedMask : NetworkBehaviour, IPickUpable
+public class SpeedMask : WearableMask
 {
     [SerializeField] private float speedMultiplier = 2f;
     [SerializeField] private float boostDuration = 10f;
     [SerializeField] private float respawnTime = 5f;
 
-    public void PickUp(GameObject target)
+    public override void PickUp(GameObject target)
     {
         if (!IsServer) return;
 
@@ -25,6 +25,8 @@ public class SpeedMask : NetworkBehaviour, IPickUpable
             ApplyBoostClientRpc(netObj.NetworkObjectId, speedMultiplier, rpcParams);
             StartCoroutine(RespawnRoutine());
         }
+
+        AttachToHead(target);
     }
 
     [ClientRpc]
@@ -34,8 +36,8 @@ public class SpeedMask : NetworkBehaviour, IPickUpable
     ClientRpcParams rpcParams = default)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(
-            playerId,
-            out NetworkObject playerObj))
+          playerId,
+          out NetworkObject playerObj))
         {
             if (playerObj.TryGetComponent<NetworkPlayerController>(out var movement))
             {

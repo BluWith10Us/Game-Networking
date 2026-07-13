@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5047518133217490390}
   - component: {fileID: 8439943932992316496}
   m_Layer: 3
-  m_Name: Face
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkPlayerController
   ShowTopMostFoldoutHeaderGroup: 1
-  moveSpeed: 8
+  baseMoveSpeed: 10
   gravity: -9.8
   groundedGravity: -9.2
   verticalVelocity: 0
