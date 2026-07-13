@@ -7,6 +7,7 @@ public class PlayerPickUp : MonoBehaviour
     [SerializeField] private LayerMask pickupLayer;
 
     private float currentRange;
+    public float CurrentRange => currentRange;
 
     private void Start()
     {

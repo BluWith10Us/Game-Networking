@@ -6,6 +6,7 @@ public class MagnetMask : WearableMask
 {
     [SerializeField] private float grabMultiplier = 4f;
     [SerializeField] private float magnetDuration = 7f;
+    [SerializeField] private GameObject magnetField; 
 
     public override void PickUp(GameObject target)
     {
@@ -35,12 +36,21 @@ public class MagnetMask : WearableMask
     ClientRpcParams rpcParams = default)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(
-          playerId,
-          out NetworkObject playerObj))
+            playerId,
+            out NetworkObject playerObj))
         {
             if (playerObj.TryGetComponent<PlayerPickUp>(out var pickup))
             {
                 StartCoroutine(BoostRoutine(pickup, multiplier));
+
+                GameObject field = Instantiate(magnetField, playerObj.transform);
+                field.transform.localPosition = Vector3.zero;
+
+                // Scale to match the pickup radius
+                float diameter = pickup.CurrentRange * 2f;
+                field.transform.localScale = Vector3.one * diameter;
+
+                Destroy(field, magnetDuration);
             }
         }
     }
