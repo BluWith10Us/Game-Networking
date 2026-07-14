@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1003613877
+  GlobalObjectIdHash: 3469785586
   InScenePlacedSourceGlobalObjectIdHash: 380018303
   DeferredDespawnTick: 0
   Ownership: 1
@@ -218,5 +218,6 @@ MonoBehaviour:
   headOffset: {x: 0, y: 1, z: 1}
   maskVisualPrefab: {fileID: 8390700635150085252, guid: 3d4ee4b7cc0230044a7646d5fcaacba6, type: 3}
   respawnTime: 5
-  grabMultiplier: 2
-  magnetDuration: 7
+  grabIncrease: 1
+  magnetDuration: 3
+  magnetField: {fileID: 7443132488273846808, guid: 654364218e921564dac33f8e8a19e5f4, type: 3}

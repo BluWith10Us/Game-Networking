@@ -26,6 +26,7 @@ public class SpeedMask : WearableMask
         }
 
         AttachToHead(target);
+        WearRoutine(boostDuration);
     }
 
     [ClientRpc]

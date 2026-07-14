@@ -14,6 +14,8 @@ public class BallLandingNotifier : NetworkBehaviour
         strength = s;
         ownerClientId = ownerId;
 
+        GetComponent<HookableBall>()?.SetOwner(ownerId);
+
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(transform.up * strength * 3f, ForceMode.Impulse);
     }

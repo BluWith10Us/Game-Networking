@@ -8,6 +8,8 @@ public abstract class WearableMask : NetworkBehaviour, IPickUpable
     [SerializeField] private GameObject maskVisualPrefab; // Prefab to instantiate on head
     [SerializeField] private float respawnTime = 5f;
 
+    private GameObject equippedVisual;
+
     public virtual void PickUp(GameObject target)
     {
 
@@ -16,18 +18,34 @@ public abstract class WearableMask : NetworkBehaviour, IPickUpable
 
     protected void AttachToHead(GameObject player)
     {
-        // Assuming your player has a child named "Head"
         Transform head = player.transform.Find("Head");
+
         if (head != null && maskVisualPrefab != null)
         {
-            // Instantiate the prefab visual on the head
-            GameObject visual = Instantiate(maskVisualPrefab, head);
-            visual.transform.localPosition = headOffset;
-            visual.transform.localRotation = Quaternion.identity;
-
-            // Disable collider of the mask object itself so it doesn't interfere
-            if (TryGetComponent<Collider>(out var col)) col.enabled = false;
+            equippedVisual = Instantiate(maskVisualPrefab, head);
+            equippedVisual.transform.localPosition = headOffset;
+            equippedVisual.transform.localRotation = Quaternion.identity;
         }
+
+        if (TryGetComponent<Collider>(out var col))
+            col.enabled = false;
+    }
+
+    protected void RemoveMask()
+    {
+        if (equippedVisual != null)
+        {
+            Destroy(equippedVisual);
+            equippedVisual = null;
+        }
+    }
+
+    protected IEnumerator WearRoutine(float duration)
+    {
+        Debug.Log($"wait routine called for: {duration}");
+        yield return new WaitForSeconds(duration);
+
+        RemoveMask();
     }
 
     public IEnumerator RespawnRoutine()

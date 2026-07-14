@@ -329,9 +329,9 @@ GameObject:
   - component: {fileID: 7226037942603216601}
   - component: {fileID: 1642944339380691446}
   - component: {fileID: -5373626989410296429}
-  - component: {fileID: 8201054745976755572}
   - component: {fileID: 7765563020506031475}
   - component: {fileID: 568667115304442534}
+  - component: {fileID: 8761951569728711427}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
   ShowTopMostFoldoutHeaderGroup: 1
-  interactKey: 101
+  interactKey: 323
   maxChargeRate: 5
   maxStrength: 10
 --- !u!114 &7226037942603216601
@@ -652,22 +652,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLookAtMouse
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &8201054745976755572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6445000338844181995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e3ebd8d870a6ef4fb6ca7b661e5968d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
-  ShowTopMostFoldoutHeaderGroup: 1
-  interactKey: 101
-  maxChargeRate: 5
-  maxStrength: 10
 --- !u!114 &7765563020506031475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,10 +685,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76720747ab4875e499abf5dcc3397cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPickUp
-  radius: 1
+  baseRange: 1
   pickupLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &8761951569728711427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6445000338844181995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9322cbd019147458d2741700fae486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHook
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &7353068801685461607
 GameObject:
   m_ObjectHideFlags: 0

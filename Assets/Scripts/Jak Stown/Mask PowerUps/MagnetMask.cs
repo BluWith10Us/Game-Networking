@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MagnetMask : WearableMask
 {
-    [SerializeField] private float grabMultiplier = 4f;
+    [SerializeField] private float grabIncrease = 4f;
     [SerializeField] private float magnetDuration = 7f;
     [SerializeField] private GameObject magnetField; 
 
@@ -22,17 +22,18 @@ public class MagnetMask : WearableMask
                 }
             };
 
-            ApplyMagnetClientRpc(netObj.NetworkObjectId, grabMultiplier, rpcParams);
+            ApplyMagnetClientRpc(netObj.NetworkObjectId, grabIncrease, rpcParams);
             StartCoroutine(RespawnRoutine());
         }
 
         AttachToHead(target);
+        WearRoutine(magnetDuration);
     }
 
     [ClientRpc]
     private void ApplyMagnetClientRpc(
     ulong playerId,
-    float multiplier,
+    float increase,
     ClientRpcParams rpcParams = default)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(
@@ -41,7 +42,7 @@ public class MagnetMask : WearableMask
         {
             if (playerObj.TryGetComponent<PlayerPickUp>(out var pickup))
             {
-                StartCoroutine(BoostRoutine(pickup, multiplier));
+                StartCoroutine(BoostRoutine(pickup, increase));
 
                 GameObject field = Instantiate(magnetField, playerObj.transform);
                 field.transform.localPosition = Vector3.zero;
