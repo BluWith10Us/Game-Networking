@@ -25,7 +25,7 @@ public class HookMask : WearableMask
         }
 
         AttachToHead(target);
-        WearRoutine(hookDuration);
+        StartCoroutine(WearRoutine(hookDuration));
     }
 
     [ClientRpc]
@@ -40,11 +40,8 @@ public class HookMask : WearableMask
         {
             if (playerObj.TryGetComponent<PlayerHook>(out var hook))
             {
-                Debug.Log("Hook Found");
                 hook.EnableHook(duration);
             }
         }
-
-        Debug.Log("Hook Client called");
     }
 }

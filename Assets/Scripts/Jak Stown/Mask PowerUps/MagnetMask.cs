@@ -27,7 +27,7 @@ public class MagnetMask : WearableMask
         }
 
         AttachToHead(target);
-        WearRoutine(magnetDuration);
+        StartCoroutine(WearRoutine(magnetDuration));
     }
 
     [ClientRpc]

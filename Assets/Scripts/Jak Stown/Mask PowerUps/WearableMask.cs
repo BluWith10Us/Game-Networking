@@ -33,6 +33,7 @@ public abstract class WearableMask : NetworkBehaviour, IPickUpable
 
     protected void RemoveMask()
     {
+        Debug.Log($"Removing: {equippedVisual.name}");
         if (equippedVisual != null)
         {
             Destroy(equippedVisual);
